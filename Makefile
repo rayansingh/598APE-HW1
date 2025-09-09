@@ -24,6 +24,7 @@ clean:
 	rm -f ./*.folded
 	rm -f ./output/*.ppm
 	rm -f ./output/*.avi
+	rm -f ./output/*.mp4
 
 pianoroom: all
 	mkdir -p output
@@ -47,7 +48,7 @@ globe: all
 test-globe: all
 	mkdir -p output
 	./main.exe -i inputs/globe.ray --ppm  -a inputs/globe.animate --movie -F 24 
-	diff golden/globe.animate output/globe.animate
+	diff golden/output.mp4 output/output.mp4
 
 perf-globe: all
 	mkdir -p output
@@ -72,7 +73,7 @@ test-sphere: all
 
 elephant: all
 	mkdir -p output
-	./main.exe -i inputs/elephant.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/sphere.mp4 
+	./main.exe -i inputs/elephant.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/elephant.mp4 
 
 perf-elephant: all
 	mkdir -p output
@@ -82,5 +83,5 @@ perf-elephant: all
 
 test-elephant: all
 	mkdir -p output
-	./main.exe -i inputs/elephant.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/sphere.mp4 
-	diff golden/sphere.mp4 output/elephant.mp4
+	./main.exe -i inputs/elephant.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/elephant.mp4 
+	diff golden/elephant.mp4 output/elephant.mp4
