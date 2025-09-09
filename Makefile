@@ -17,3 +17,39 @@ clean:
 	cd ./src && make clean
 	rm -f ./*.exe
 	rm -f ./*.obj
+	rm -f ./*.svg
+	rm -f ./*.html
+	rm -f ./*.data
+	rm -f ./*.data.old
+	rm -f ./*.folded
+	rm -f ./output/*.ppm
+
+pianoroom: all
+	mkdir -p output
+	./main.exe -i inputs/pianoroom.ray --ppm -o output/pianoroom.ppm -H 500 -W 500
+
+perf-pianoroom: all
+	mkdir -p output
+	perf record -F 400 -g --call-graph fp -- ./main.exe -i inputs/pianoroom.ray --ppm -o output/pianoroom.ppm -H 500 -W 500
+	perf script | stackcollapse-perf.pl > perf.folded
+	flamegraph.pl perf.folded > pianoroom_flamegraph.svg
+
+globe: all
+	mkdir -p output
+	./main.exe -i inputs/globe.ray --ppm  -a inputs/globe.animate --movie -F 24 
+
+perf-globe: all
+	mkdir -p output
+	perf record -F 400 -g --call-graph fp -- ./main.exe -i inputs/globe.ray --ppm  -a inputs/globe.animate --movie -F 24 
+	perf script | stackcollapse-perf.pl > perf.folded
+	flamegraph.pl perf.folded > globe_flamegraph.svg
+
+elephant: all
+	mkdir -p output
+	./main.exe -i inputs/elephant.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/sphere.mp4 
+
+perf-elephant: all
+	mkdir -p output
+	perf record -F 400 -g --call-graph fp -- ./main.exe -i inputs/elephant.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/sphere.mp4 
+	perf script | stackcollapse-perf.pl > perf.folded
+	flamegraph.pl perf.folded > elephant_flamegraph.svg
