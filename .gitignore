@@ -1,3 +1,7 @@
 src/**/*.obj
 main.exe
 output/*
+*.svg
+*.data
+*.folded
+.vscode
