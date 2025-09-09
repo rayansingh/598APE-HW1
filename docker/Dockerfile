@@ -17,4 +17,9 @@ RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 10 --sl
 
 RUN ln -s /usr/bin/convert /usr/bin/magick
 
+# FlameGraph
+ENV FLAMEGRAPH_DIR=/opt/FlameGraph
+RUN git clone --depth=1 https://github.com/brendangregg/FlameGraph.git "$FLAMEGRAPH_DIR"
+ENV PATH="$FLAMEGRAPH_DIR:$PATH"
+
 ENV DEBIAN_FRONTEND=

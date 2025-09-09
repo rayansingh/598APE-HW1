@@ -1,0 +1,1 @@
+docker build -t rayans2/cs598ape -f docker/Dockerfile .
