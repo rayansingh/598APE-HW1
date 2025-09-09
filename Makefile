@@ -23,6 +23,7 @@ clean:
 	rm -f ./*.data.old
 	rm -f ./*.folded
 	rm -f ./output/*.ppm
+	rm -f ./output/*.avi
 
 pianoroom: all
 	mkdir -p output
