@@ -13,6 +13,8 @@
 #include<stdlib.h>
 #include <string.h>
 #include <iostream>
+#include <thread>
+#include <vector>
 using namespace std;
 
 #include <sys/time.h>
@@ -46,10 +48,25 @@ void set(int i, int j, unsigned char r, unsigned char g, unsigned char b){
 }
 
 void refresh(Autonoma* c){
-   for(int n = 0; n<H*W; ++n) 
-   { 
-      Vector ra = c->camera.forward+((double)(n%W)/W-.5)*((c->camera.right))+(.5-(double)(n/W)/H)*((c->camera.up));
-      calcColor(&DATA[3*n], c, Ray(c->camera.focus, ra), 0);
+   auto worker = [&](int start, int end) -> void {
+      for (int n = start; n < end; n ++) {
+         if (n >= H*W) return;
+         Vector ra = c->camera.forward+((double)(n%W)/W-.5)*((c->camera.right))+(.5-(double)(n/W)/H)*((c->camera.up));
+         calcColor(&DATA[3*n], c, Ray(c->camera.focus, ra), 0);
+      }
+   };
+
+   int num_threads = thread::hardware_concurrency();
+   vector<thread> threads;
+   int chunk_size = ceil((1.0*H*W) / num_threads);
+   for (int t = 0; t < num_threads; t ++) {
+      int start = t * chunk_size;
+      int end = (t == num_threads - 1) ? H*W : (t + 1) * chunk_size;
+      threads.emplace_back(worker, start, end);
+   }
+
+   for (auto& th : threads) {
+      th.join();
    }
 }
 
