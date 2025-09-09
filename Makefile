@@ -55,6 +55,21 @@ perf-globe: all
 	perf script | stackcollapse-perf.pl > perf.folded
 	flamegraph.pl perf.folded > globe_flamegraph.svg
 
+sphere: all
+	mkdir -p output
+	./main.exe -i inputs/sphere.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/sphere.mp4 
+
+perf-sphere: all
+	mkdir -p output
+	perf record -F 400 -g --call-graph fp -- ./main.exe -i inputs/sphere.ray --ppm  -a inputs/sphere.animate --movie -F 24 -W 100 -H 100 -o output/sphere.mp4 
+	perf script | stackcollapse-perf.pl > perf.folded
+	flamegraph.pl perf.folded > sphere_flamegraph.svg
+
+test-sphere: all
+	mkdir -p output
+	./main.exe -i inputs/sphere.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/sphere.mp4 
+	diff golden/sphere.mp4 output/sphere.mp4
+
 elephant: all
 	mkdir -p output
 	./main.exe -i inputs/elephant.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/sphere.mp4 
@@ -68,4 +83,4 @@ perf-elephant: all
 test-elephant: all
 	mkdir -p output
 	./main.exe -i inputs/elephant.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/sphere.mp4 
-	diff golden/sphere.mp4 output/sphere.mp4
+	diff golden/sphere.mp4 output/elephant.mp4
