@@ -1,7 +1,8 @@
 FUNC := g++
 copt := -c 
 OBJ_DIR := ./bin/
-FLAGS := -O3 -lm -g -Werror
+INTEL_INTRINSIC_FLAGS := -mavx512f -mavx512dq -mavx512bw -mavx512vl -mavx512vnni
+FLAGS := -O3 -lm -g -Werror $(INTEL_INTRINSIC_FLAGS)
 
 CPP_FILES := $(wildcard src/*.cpp)
 OBJ_FILES := $(addprefix $(OBJ_DIR),$(notdir $(CPP_FILES:.cpp=.obj)))
