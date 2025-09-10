@@ -40,7 +40,8 @@ perf-pianoroom: all
 test-pianoroom: all
 	mkdir -p output
 	./main.exe -i inputs/pianoroom.ray --ppm -o output/pianoroom.ppm -H 500 -W 500
-	diff golden/pianoroom.ppm output/pianoroom.ppm
+	ffmpeg -hide_banner -i golden/pianoroom.ppm -i output/pianoroom.ppm -lavfi "[1:v][0:v]scale2ref[bs][a];[a][bs]psnr" -f null -
+
 
 globe: all
 	mkdir -p output
@@ -49,7 +50,7 @@ globe: all
 test-globe: all
 	mkdir -p output
 	./main.exe -i inputs/globe.ray --ppm  -a inputs/globe.animate --movie -F 24 
-	diff golden/output.mp4 output/output.mp4
+	ffmpeg -hide_banner -i golden/output.mp4 -i output/output.mp4 -lavfi "[1:v][0:v]scale2ref[bs][a];[a][bs]psnr" -f null -
 
 perf-globe: all
 	mkdir -p output
@@ -70,7 +71,7 @@ perf-sphere: all
 test-sphere: all
 	mkdir -p output
 	./main.exe -i inputs/sphere.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/sphere.mp4 
-	diff golden/sphere.mp4 output/sphere.mp4
+	ffmpeg -hide_banner -i golden/sphere.mp4 -i output/sphere.mp4 -lavfi "[1:v][0:v]scale2ref[bs][a];[a][bs]psnr" -f null -
 
 elephant: all
 	mkdir -p output
@@ -85,4 +86,4 @@ perf-elephant: all
 test-elephant: all
 	mkdir -p output
 	./main.exe -i inputs/elephant.ray --ppm  -a inputs/elephant.animate --movie -F 24 -W 100 -H 100 -o output/elephant.mp4 
-	diff golden/elephant.mp4 output/elephant.mp4
+	ffmpeg -hide_banner -i golden/elephant.mp4 -i output/elephant.mp4 -lavfi "[1:v][0:v]scale2ref[bs][a];[a][bs]psnr" -f null -
