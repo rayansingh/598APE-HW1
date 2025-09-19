@@ -45,6 +45,7 @@ perf-pianoroom: all
 	perf record -F 400 -g --call-graph fp -- ${PIANOROOM_RUN}
 	perf script | stackcollapse-perf.pl > perf.folded
 	flamegraph.pl perf.folded > pianoroom_flamegraph.svg
+	perf report
 
 mem-pianoroom: all
 	mkdir -p output
@@ -69,7 +70,7 @@ perf-globe: all
 	perf record -F 400 -g --call-graph fp -- ${GLOBE_RUN}
 	perf script | stackcollapse-perf.pl > perf.folded
 	flamegraph.pl perf.folded > globe_flamegraph.svg
-	${MEMUSAGE_LOADER} ${GLOBE_RUN}
+	perf report
 
 mem-globe: all
 	mkdir -p output
@@ -84,7 +85,7 @@ perf-sphere: all
 	perf record -F 400 -g --call-graph fp -- ${SPHERE_RUN}
 	perf script | stackcollapse-perf.pl > perf.folded
 	flamegraph.pl perf.folded > sphere_flamegraph.svg
-	${MEMUSAGE_LOADER} ${SPHERE_RUN}
+	perf report
 
 test-sphere: all
 	mkdir -p output
@@ -104,7 +105,7 @@ perf-elephant: all
 	perf record -F 400 -g --call-graph fp -- ${ELEPHANT_RUN}
 	perf script | stackcollapse-perf.pl > perf.folded
 	flamegraph.pl perf.folded > elephant_flamegraph.svg
-	${MEMUSAGE_LOADER} ${ELEPHANT_RUN}
+	perf report
 
 test-elephant: all
 	mkdir -p output

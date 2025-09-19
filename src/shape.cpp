@@ -50,22 +50,24 @@ void insertionSort(TimeAndShape *arr, int n) {
 
 void calcColor(unsigned char* toFill,Autonoma* c, Ray ray, unsigned int depth){
    ShapeNode* t = c->listStart;
-   TimeAndShape *times = (TimeAndShape*)malloc(0);
-   size_t seen = 0;
+   
+   /* Shape that is directly intersected by ray */
+   TimeAndShape closest{.time=inf, .shape=nullptr};
+
+   bool existsIntersection = false;
    while(t!=NULL){
       double time = t->data->getIntersection(ray);
 
-      TimeAndShape *times2 = (TimeAndShape*)malloc(sizeof(TimeAndShape)*(seen + 1));
-      for (int i=0; i<seen; i++)
-         times2[i] = times[i];
-      times2[seen] = (TimeAndShape){ time, t->data };
-      free(times);
-      times = times2;
-      seen ++;
+      if (time < closest.time) {
+         closest.time = time;
+         closest.shape = t->data;
+      }
+
+      existsIntersection = true;
       t = t->next;
    }
-   insertionSort(times, seen);
-   if (seen == 0 || times[0].time == inf) {
+
+   if (!existsIntersection || closest.time == inf) {
       double opacity, reflection, ambient;
       Vector temp = ray.vector.normalize();
       const double x = temp.x;
@@ -76,9 +78,8 @@ void calcColor(unsigned char* toFill,Autonoma* c, Ray ray, unsigned int depth){
       return;
    }
 
-   double curTime = times[0].time;
-   Shape* curShape = times[0].shape;
-   free(times);
+   double curTime = closest.time;
+   Shape* curShape = closest.shape;
 
    Vector intersect = curTime*ray.vector+ray.point;
    double opacity, reflection, ambient;
@@ -89,7 +90,8 @@ void calcColor(unsigned char* toFill,Autonoma* c, Ray ray, unsigned int depth){
    toFill[0] = (unsigned char)(toFill[0]*(ambient+lightData[0]*(1-ambient)));
    toFill[1] = (unsigned char)(toFill[1]*(ambient+lightData[1]*(1-ambient)));
    toFill[2] = (unsigned char)(toFill[2]*(ambient+lightData[2]*(1-ambient)));
-   if(depth<c->depth && (opacity<1-1e-6 || reflection>1e-6)){
+   
+   if(depth<c->depth){
       unsigned char col[4];
       if(opacity<1-1e-6){
          Ray nextRay = Ray(intersect+ray.vector*1E-4, ray.vector);
