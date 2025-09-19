@@ -9,10 +9,10 @@ bool Sphere::getLightIntersection(Ray ray, double* fill){
    const double A = ray.vector.mag2();
    const double B = 2*ray.vector.dot(ray.point-center);
    const double C = (ray.point-center).mag2()-radius*radius;
-   const double descriminant = B*B-4*A*C;
-   if(descriminant<0. || descriminant<B*((B>=0)?B:-B)) return false;
-   
-      const double desc = sqrt(descriminant);
+   const double descriminant_left = B*B;
+   const double descriminant_right = 4*A*C;
+   if(descriminant_left < descriminant_right || B <0. || descriminant_right > 0) return false;
+      const double desc = sqrt(descriminant_left - descriminant_right);
       const double root1 = (-B-desc)/(2*A);
       const double root2 = (-B+desc)/(2*A);
    const double time = (root1>0)?root1:root2;
