@@ -63,7 +63,7 @@ void calcColor(unsigned char* toFill,Autonoma* c, Ray ray, unsigned int depth){
          closest.shape = t->data;
       }
 
-      existsIntersection = true;
+      existsIntersection |= (time != inf);
       t = t->next;
    }
 
