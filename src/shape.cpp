@@ -54,20 +54,18 @@ void calcColor(unsigned char* toFill,Autonoma* c, Ray ray, unsigned int depth){
    /* Shape that is directly intersected by ray */
    TimeAndShape closest{.time=inf, .shape=nullptr};
 
-   bool existsIntersection = false;
    while(t!=NULL){
       double time = t->data->getIntersection(ray);
 
-      if (time < closest.time) {
+      if (time != inf && time < closest.time) {
          closest.time = time;
          closest.shape = t->data;
       }
 
-      existsIntersection |= (time != inf);
       t = t->next;
    }
 
-   if (!existsIntersection || closest.time == inf) {
+   if (!closest.shape) {
       double opacity, reflection, ambient;
       Vector temp = ray.vector.normalize();
       const double x = temp.x;
