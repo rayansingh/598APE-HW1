@@ -57,7 +57,7 @@ void calcColor(unsigned char* toFill,Autonoma* c, Ray ray, unsigned int depth){
    while(t!=NULL){
       double time = t->data->getIntersection(ray);
 
-      if (time != inf && time < closest.time) {
+      if (time < closest.time) {
          closest.time = time;
          closest.shape = t->data;
       }
