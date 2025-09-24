@@ -15,22 +15,22 @@ make clean
 ```
 
 To run a specific testcase run:
-```bash
+```
 make <TESTCASE>
 ```
 
 To get a flamegraph of a specific testcase run:
-```bash
+```
 make perf-<TESTCASE>
 ```
 
 To check the memory usage of a specific testcase run:
-```bash
+```
 make mem-<TESTCASE>
 ```
 
 To compare the output of a specific testcase (no baseline for the elephant object sample) with the baseline output run:
-```bash
+```
 make test-<TESTCASE>
 ```
 
