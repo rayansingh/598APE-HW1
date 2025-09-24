@@ -6,12 +6,32 @@ In particular, this repository is an implementation of a Raytracer.
 
 To compile the program run:
 ```bash
-make -j
+make all
 ```
 
 To clean existing build artifacts run:
 ```bash
 make clean
+```
+
+To run a specific testcase run:
+```bash
+make <TESTCASE>
+```
+
+To get a flamegraph of a specific testcase run:
+```bash
+make perf-<TESTCASE>
+```
+
+To check the memory usage of a specific testcase run:
+```bash
+make mem-<TESTCASE>
+```
+
+To compare the output of a specific testcase (no baseline for the elephant object sample) with the baseline output run:
+```bash
+make test-<TESTCASE>
 ```
 
 This program assumes the following are installed on your machine:
